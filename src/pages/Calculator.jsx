@@ -175,43 +175,43 @@ function Calculator() {
   };
 
   if (!subject) {
-    return <Box>Loading...</Box>;
+    return <Box color="white">Loading...</Box>;
   }
 
   return (
     <Box>
       <HStack justifyContent="space-between" mb={6}>
-        <Heading size="lg">{subject.name} Grade Calculator</Heading>
-        <Button colorScheme="blue" onClick={calculateFinalGrade}>
+        <Heading size="lg" color="gray.100">{subject.name} Grade Calculator</Heading>
+        <Button colorScheme="green" onClick={calculateFinalGrade}>
           Recalculate
         </Button>
       </HStack>
 
-      <Card mb={8} bg="blue.50" borderRadius="lg">
+      <Card mb={8} bg="gray.700" borderRadius="lg">
         <CardBody>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
             <Box textAlign="center">
-              <Text fontSize="lg" fontWeight="bold">Final Percentage</Text>
-              <Text fontSize="3xl" fontWeight="bold" color="blue.600">
+              <Text fontSize="lg" fontWeight="bold" color="gray.200">Final Percentage</Text>
+              <Text fontSize="3xl" fontWeight="bold" color="blue.300">
                 {finalGrade.percentage.toFixed(2)}%
               </Text>
               <Progress 
                 value={finalGrade.percentage} 
-                colorScheme="blue" 
+                colorScheme="green" 
                 size="sm" 
                 borderRadius="md" 
                 mt={2}
               />
             </Box>
             <Box textAlign="center">
-              <Text fontSize="lg" fontWeight="bold">Letter Grade</Text>
-              <Text fontSize="3xl" fontWeight="bold" color="blue.600">
+              <Text fontSize="lg" fontWeight="bold" color="gray.200">Letter Grade</Text>
+              <Text fontSize="3xl" fontWeight="bold" color="blue.300">
                 {finalGrade.letter}
               </Text>
             </Box>
             <Box textAlign="center">
-              <Text fontSize="lg" fontWeight="bold">GPA</Text>
-              <Text fontSize="3xl" fontWeight="bold" color="blue.600">
+              <Text fontSize="lg" fontWeight="bold" color="gray.200">GPA</Text>
+              <Text fontSize="3xl" fontWeight="bold" color="blue.300">
                 {finalGrade.gpa.toFixed(2)}
               </Text>
             </Box>
@@ -220,7 +220,7 @@ function Calculator() {
       </Card>
 
       {categories.reduce((sum, category) => sum + Number(category.weight), 0) !== 100 && (
-        <Alert status="warning" mb={4}>
+        <Alert status="warning" mb={4} bg="yellow.800" color="white">
           <AlertIcon />
           The category weights must add up to 100%. Currently they total 
           {" " + categories.reduce((sum, category) => sum + Number(category.weight), 0) + "%"}.
@@ -229,26 +229,28 @@ function Calculator() {
 
       <VStack spacing={6} align="stretch" mb={8}>
         {categories.map(category => (
-          <Card key={category.id} borderRadius="md">
+          <Card key={category.id} borderRadius="md" bg="gray.800" borderColor="gray.700">
             <CardBody>
               <VStack spacing={4} align="stretch">
                 <HStack justifyContent="space-between">
                   <FormControl maxW="200px">
-                    <FormLabel>Category Name</FormLabel>
+                    <FormLabel color="gray.300">Category Name</FormLabel>
                     <Input 
                       value={category.name} 
                       onChange={(e) => updateCategory(category.id, 'name', e.target.value)}
+                      bg="gray.700"
+                      borderColor="gray.600"
                     />
                   </FormControl>
                   <FormControl maxW="150px">
-                    <FormLabel>Weight (%)</FormLabel>
+                    <FormLabel color="gray.300">Weight (%)</FormLabel>
                     <NumberInput 
                       value={category.weight}
                       onChange={(value) => updateCategory(category.id, 'weight', Number(value))}
                       min={0}
                       max={100}
                     >
-                      <NumberInputField />
+                      <NumberInputField bg="gray.700" borderColor="gray.600" />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
@@ -264,16 +266,16 @@ function Calculator() {
                   />
                 </HStack>
 
-                <Divider />
+                <Divider borderColor="gray.600" />
 
                 {/* Items Table */}
                 <Table size="sm" variant="simple">
                   <Thead>
                     <Tr>
-                      <Th>Name</Th>
-                      <Th isNumeric>Points Earned</Th>
-                      <Th isNumeric>Max Points</Th>
-                      <Th isNumeric>Percentage</Th>
+                      <Th color="gray.400">Name</Th>
+                      <Th isNumeric color="gray.400">Points Earned</Th>
+                      <Th isNumeric color="gray.400">Max Points</Th>
+                      <Th isNumeric color="gray.400">Percentage</Th>
                       <Th w="50px"></Th>
                     </Tr>
                   </Thead>
@@ -290,6 +292,8 @@ function Calculator() {
                               size="sm"
                               value={item.name}
                               onChange={(e) => updateItem(category.id, item.id, 'name', e.target.value)}
+                              bg="gray.700"
+                              borderColor="gray.600"
                             />
                           </Td>
                           <Td isNumeric>
@@ -299,7 +303,7 @@ function Calculator() {
                               onChange={(value) => updateItem(category.id, item.id, 'points', Number(value))}
                               min={0}
                             >
-                              <NumberInputField />
+                              <NumberInputField bg="gray.700" borderColor="gray.600" />
                             </NumberInput>
                           </Td>
                           <Td isNumeric>
@@ -309,10 +313,10 @@ function Calculator() {
                               onChange={(value) => updateItem(category.id, item.id, 'maxPoints', Number(value))}
                               min={1}
                             >
-                              <NumberInputField />
+                              <NumberInputField bg="gray.700" borderColor="gray.600" />
                             </NumberInput>
                           </Td>
-                          <Td isNumeric>
+                          <Td isNumeric color="gray.300">
                             {percentage.toFixed(2)}%
                           </Td>
                           <Td>
@@ -335,6 +339,7 @@ function Calculator() {
                   size="sm" 
                   onClick={() => addItem(category.id)} 
                   alignSelf="flex-start"
+                  colorScheme="green"
                 >
                   Add Item
                 </Button>
@@ -344,21 +349,21 @@ function Calculator() {
         ))}
       </VStack>
 
-      <Button leftIcon={<AddIcon />} mb={8} onClick={addCategory}>
+      <Button leftIcon={<AddIcon />} mb={8} onClick={addCategory} colorScheme="green">
         Add Category
       </Button>
 
-      <Card mb={8}>
+      <Card mb={8} bg="gray.800" borderColor="gray.700">
         <CardBody>
-          <Heading size="md" mb={4}>Bonus Points</Heading>
+          <Heading size="md" mb={4} color="gray.200">Bonus Points</Heading>
           <FormControl maxW="200px">
-            <FormLabel>Extra Percentage Points</FormLabel>
+            <FormLabel color="gray.300">Extra Percentage Points</FormLabel>
             <NumberInput 
               value={bonusPoints}
               onChange={(value) => setBonusPoints(Number(value))}
               min={0}
             >
-              <NumberInputField />
+              <NumberInputField bg="gray.700" borderColor="gray.600" />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
@@ -368,15 +373,15 @@ function Calculator() {
         </CardBody>
       </Card>
 
-      <Card>
+      <Card bg="gray.800" borderColor="gray.700">
         <CardBody>
-          <Heading size="md" mb={4}>Grading Scale</Heading>
+          <Heading size="md" mb={4} color="gray.200">Grading Scale</Heading>
           <Table size="sm">
             <Thead>
               <Tr>
-                <Th>Letter Grade</Th>
-                <Th>Minimum Percentage</Th>
-                <Th>GPA Value</Th>
+                <Th color="gray.400">Letter Grade</Th>
+                <Th color="gray.400">Minimum Percentage</Th>
+                <Th color="gray.400">GPA Value</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -387,6 +392,8 @@ function Calculator() {
                       size="sm"
                       value={grade.letter}
                       onChange={(e) => updateGradingScale(index, 'letter', e.target.value)}
+                      bg="gray.700" 
+                      borderColor="gray.600"
                     />
                   </Td>
                   <Td>
@@ -397,7 +404,7 @@ function Calculator() {
                       min={0}
                       max={100}
                     >
-                      <NumberInputField />
+                      <NumberInputField bg="gray.700" borderColor="gray.600" />
                     </NumberInput>
                   </Td>
                   <Td>
@@ -410,7 +417,7 @@ function Calculator() {
                       max={4.0}
                       precision={1}
                     >
-                      <NumberInputField />
+                      <NumberInputField bg="gray.700" borderColor="gray.600" />
                     </NumberInput>
                   </Td>
                 </Tr>

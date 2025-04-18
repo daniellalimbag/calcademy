@@ -32,14 +32,14 @@ function Settings() {
 
   return (
     <Box>
-      <Heading size="lg" mb={6}>Settings</Heading>
+      <Heading size="lg" mb={6} color="gray.100">Settings</Heading>
       
-      <Card mb={6}>
+      <Card mb={6} bg="gray.800" borderColor="gray.700">
         <CardBody>
           <VStack align="stretch" spacing={4}>
-            <Heading size="md">Data Management</Heading>
+            <Heading size="md" color="gray.200">Data Management</Heading>
             
-            <Alert status="warning" borderRadius="md">
+            <Alert status="warning" borderRadius="md" bg="yellow.800" color="white">
               <AlertIcon />
               <Box>
                 <AlertTitle>Clear All Data</AlertTitle>

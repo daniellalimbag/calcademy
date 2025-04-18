@@ -1,22 +1,51 @@
-import { Box, Flex, Heading, Button, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, HStack, useColorMode, IconButton } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+import { SunIcon, MoonIcon } from '@chakra-ui/icons';
 
 function Header() {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Box bg={useColorModeValue('white', 'gray.800')} px={4} boxShadow="sm">
+    <Box 
+      bg={colorMode === 'dark' ? 'gray.800' : 'white'} 
+      px={4} 
+      boxShadow="lg"
+      borderBottomWidth="1px"
+      borderBottomColor={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
+    >
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <HStack spacing={8} alignItems="center">
-          <Heading as="h1" size="md" letterSpacing="tight">
+          <Heading as="h1" size="md" letterSpacing="tight" color="green.500">
             <RouterLink to="/">Calcademy</RouterLink>
           </Heading>
         </HStack>
         <HStack spacing={4}>
-          <Button as={RouterLink} to="/" variant="ghost">
+          <Button 
+            as={RouterLink} 
+            to="/" 
+            variant="ghost" 
+            color={colorMode === 'dark' ? 'gray.200' : 'gray.700'} 
+            _hover={{ bg: colorMode === 'dark' ? 'gray.700' : 'gray.100' }}
+          >
             Dashboard
           </Button>
-          <Button as={RouterLink} to="/settings" variant="ghost">
+          <Button 
+            as={RouterLink} 
+            to="/settings" 
+            variant="ghost" 
+            color={colorMode === 'dark' ? 'gray.200' : 'gray.700'} 
+            _hover={{ bg: colorMode === 'dark' ? 'gray.700' : 'gray.100' }}
+          >
             Settings
           </Button>
+          <IconButton
+            aria-label="Toggle color mode"
+            icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            onClick={toggleColorMode}
+            variant="ghost"
+            color={colorMode === 'dark' ? 'gray.200' : 'gray.700'}
+            _hover={{ bg: colorMode === 'dark' ? 'gray.700' : 'gray.100' }}
+          />
         </HStack>
       </Flex>
     </Box>

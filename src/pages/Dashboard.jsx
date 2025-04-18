@@ -3,7 +3,7 @@ import {
   Box, Heading, Button, SimpleGrid, Card, CardHeader, CardBody, CardFooter,
   Text, HStack, VStack, Input, FormControl, FormLabel, useDisclosure,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-  useToast, Alert, AlertIcon
+  useToast, Alert, AlertIcon, useColorMode
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
@@ -14,6 +14,7 @@ function Dashboard() {
   const [isStorageAvailable, setIsStorageAvailable] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     try {
@@ -37,7 +38,7 @@ function Dashboard() {
     try {
       const savedSubjects = localStorage.getItem('calcademy-subjects');
       if (savedSubjects) {
-        setSubjects(JSON.parse(savedSubjects)); // Set the state to the parsed data
+        setSubjects(JSON.parse(savedSubjects));
       }
     } catch (error) {
       console.error('Error retrieving subjects from localStorage:', error);
@@ -47,7 +48,7 @@ function Dashboard() {
   useEffect(() => {
     if (subjects && subjects.length > 0) {
       try {
-        localStorage.setItem('calcademy-subjects', JSON.stringify(subjects)); // Save updated state to localStorage
+        localStorage.setItem('calcademy-subjects', JSON.stringify(subjects));
       } catch (error) {
         console.error('Error saving subjects to localStorage:', error);
       }
@@ -74,6 +75,7 @@ function Dashboard() {
 
     setSubjects(updatedSubjects);
     setNewSubject({ id: '', name: '', description: '' });
+    onClose();
 
     toast({
       title: 'Subject added',
@@ -88,7 +90,13 @@ function Dashboard() {
     if (window.confirm(`Are you sure you want to delete "${name}"? This will remove all associated grade data.`)) {
       const updatedSubjects = subjects.filter(subject => subject.id !== id);
       setSubjects(updatedSubjects);
-
+  
+      try {
+        localStorage.setItem('calcademy-subjects', JSON.stringify(updatedSubjects));
+      } catch (error) {
+        console.error('Error saving updated subjects to localStorage:', error);
+      }
+  
       try {
         localStorage.removeItem(`calcademy-categories-${id}`);
         localStorage.removeItem(`calcademy-scale-${id}`);
@@ -96,7 +104,7 @@ function Dashboard() {
       } catch (error) {
         console.error('Error removing related localStorage data:', error);
       }
-
+  
       toast({
         title: 'Subject deleted',
         description: `${name} has been deleted`,
@@ -105,7 +113,16 @@ function Dashboard() {
         isClosable: true,
       });
     }
-  };
+  };  
+
+  const cardBg = colorMode === 'dark' ? 'gray.800' : 'white';
+  const cardBorderColor = colorMode === 'dark' ? 'gray.700' : 'gray.200';
+  const headingColor = colorMode === 'dark' ? 'gray.100' : 'gray.800';
+  const subheadingColor = colorMode === 'dark' ? 'green.300' : 'green.600';
+  const textColor = colorMode === 'dark' ? 'gray.300' : 'gray.600';
+  const descriptionColor = colorMode === 'dark' ? 'gray.400' : 'gray.500';
+  const inputBg = colorMode === 'dark' ? 'gray.700' : 'white';
+  const inputBorderColor = colorMode === 'dark' ? 'gray.600' : 'gray.200';
 
   return (
     <Box>
@@ -117,36 +134,36 @@ function Dashboard() {
       )}
 
       <HStack justifyContent="space-between" mb={6}>
-        <Heading size="lg">My Subjects</Heading>
-        <Button leftIcon={<AddIcon />} colorScheme="blue" onClick={onOpen}>
+        <Heading size="lg" color={headingColor}>My Subjects</Heading>
+        <Button leftIcon={<AddIcon />} colorScheme="green" onClick={onOpen}>
           Add Subject
         </Button>
       </HStack>
 
       {subjects.length === 0 ? (
-        <Card textAlign="center" p={6}>
+        <Card textAlign="center" p={6} bg={cardBg} borderColor={cardBorderColor}>
           <CardBody>
             <VStack spacing={4}>
-              <Text fontSize="lg">No subjects added yet.</Text>
-              <Button colorScheme="blue" onClick={onOpen}>Add Your First Subject</Button>
+              <Text fontSize="lg" color={textColor}>No subjects added yet.</Text>
+              <Button colorScheme="green" onClick={onOpen}>Add Your First Subject</Button>
             </VStack>
           </CardBody>
         </Card>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
           {subjects.map(subject => (
-            <Card key={subject.id} boxShadow="md" borderRadius="lg">
+            <Card key={subject.id} boxShadow="md" borderRadius="lg" bg={cardBg} borderColor={cardBorderColor}>
               <CardHeader pb={0}>
-                <Heading size="md">{subject.name}</Heading>
+                <Heading size="md" color={subheadingColor}>{subject.name}</Heading>
               </CardHeader>
               <CardBody>
-                <Text>{subject.description || 'No description'}</Text>
+                <Text color={descriptionColor}>{subject.description || 'No description'}</Text>
               </CardBody>
               <CardFooter pt={0} justifyContent="space-between">
                 <Button
                   as={RouterLink}
                   to={`/calculator/${subject.id}`}
-                  colorScheme="blue"
+                  colorScheme="green"
                   size="sm"
                 >
                   Calculate Grades
@@ -167,7 +184,7 @@ function Dashboard() {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={cardBg} color={textColor}>
           <ModalHeader>Add New Subject</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -177,6 +194,8 @@ function Dashboard() {
                 value={newSubject.name}
                 onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
                 placeholder="e.g. Mathematics 101"
+                bg={inputBg}
+                borderColor={inputBorderColor}
               />
             </FormControl>
             <FormControl>
@@ -185,14 +204,16 @@ function Dashboard() {
                 value={newSubject.description}
                 onChange={(e) => setNewSubject({ ...newSubject, description: e.target.value })}
                 placeholder="e.g. Fall 2024 - Professor Smith"
+                bg={inputBg}
+                borderColor={inputBorderColor}
               />
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
+            <Button variant="ghost" mr={3} onClick={onClose} _hover={{ bg: colorMode === 'dark' ? "gray.700" : "gray.100" }}>
               Cancel
             </Button>
-            <Button colorScheme="blue" onClick={handleAddSubject}>
+            <Button colorScheme="green" onClick={handleAddSubject}>
               Add Subject
             </Button>
           </ModalFooter>
