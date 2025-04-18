@@ -150,9 +150,98 @@ function Calculator() {
     }));
   };
 
+  const findUniquePercentage = () => {
+    const sortedScale = [...gradingScale].sort((a, b) => a.minPercentage - b.minPercentage);
+    const lowestGrade = sortedScale[0];
+    let newPercentage = Math.max(0, lowestGrade ? lowestGrade.minPercentage - 5 : 0);
+    while (gradingScale.some(grade => grade.minPercentage === newPercentage)) {
+      newPercentage = Math.max(0, newPercentage - 1);
+    }
+    
+    return newPercentage;
+  };
+
+  const findUniqueGpa = () => {
+    const sortedScale = [...gradingScale].sort((a, b) => a.gpa - b.gpa);
+    
+    const lowestGrade = sortedScale[0];
+    
+    let newGpa = Math.max(0, lowestGrade ? parseFloat((lowestGrade.gpa - 0.1).toFixed(1)) : 0);
+    
+    while (gradingScale.some(grade => grade.gpa === newGpa)) {
+      newGpa = Math.max(0, parseFloat((newGpa - 0.1).toFixed(1)));
+    }
+    
+    return newGpa;
+  };
+
+  const addGradeToScale = () => {
+    const newMinPercentage = findUniquePercentage();
+    const newGpa = findUniqueGpa();
+    
+    setGradingScale([
+      ...gradingScale,
+      { letter: 'New', minPercentage: newMinPercentage, gpa: newGpa }
+    ]);
+    
+    toast({
+      title: 'Grade Added',
+      description: 'A new grade has been added to the scale.',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
+  // Delete a grade from the grading scale
+  const deleteGradeFromScale = (index) => {
+    if (gradingScale.length <= 1) {
+      toast({
+        title: 'Cannot Delete',
+        description: 'You must have at least one grade in the scale.',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    const updatedScale = gradingScale.filter((_, i) => i !== index);
+    setGradingScale(updatedScale);
+    
+    toast({
+      title: 'Grade Deleted',
+      description: 'The grade has been removed from the scale.',
+      status: 'info',
+      duration: 2000,
+      isClosable: true,
+    });
+    
+    calculateFinalGrade();
+  };
+
   const updateGradingScale = (index, field, value) => {
     const updatedScale = [...gradingScale];
-    updatedScale[index] = { ...updatedScale[index], [field]: field === 'minPercentage' ? Number(value) : value };
+    const newValue = field === 'minPercentage' || field === 'gpa' ? Number(value) : value;
+    
+    if (field === 'minPercentage' || field === 'gpa') {
+      const isDuplicate = gradingScale.some((grade, i) => 
+        i !== index && grade[field] === newValue
+      );
+      
+      if (isDuplicate) {
+        toast({
+          title: `Duplicate ${field === 'minPercentage' ? 'Percentage' : 'GPA'}`,
+          description: `Another grade already has this ${field === 'minPercentage' ? 'percentage' : 'GPA'} value.`,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
+    
+    updatedScale[index] = { ...updatedScale[index], [field]: newValue };
     setGradingScale(updatedScale);
     calculateFinalGrade();
   };
@@ -394,13 +483,24 @@ function Calculator() {
 
       <Card bg={cardBg} borderColor={cardBorderColor}>
         <CardBody>
-          <Heading size="md" mb={4} color={subheadingColor}>Grading Scale</Heading>
+          <HStack justifyContent="space-between" mb={4}>
+            <Heading size="md" color={subheadingColor}>Grading Scale</Heading>
+            <Button 
+              leftIcon={<AddIcon />} 
+              size="sm" 
+              onClick={addGradeToScale} 
+              colorScheme="green"
+            >
+              Add Grade
+            </Button>
+          </HStack>
           <Table size="sm">
             <Thead>
               <Tr>
                 <Th color={tableHeaderColor}>Letter Grade</Th>
                 <Th color={tableHeaderColor}>Minimum Percentage</Th>
                 <Th color={tableHeaderColor}>GPA Value</Th>
+                <Th width="50px"></Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -438,6 +538,15 @@ function Calculator() {
                     >
                       <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
                     </NumberInput>
+                  </Td>
+                  <Td>
+                    <IconButton
+                      size="sm"
+                      icon={<DeleteIcon />}
+                      colorScheme="red"
+                      variant="ghost"
+                      onClick={() => deleteGradeFromScale(index)}
+                    />
                   </Td>
                 </Tr>
               ))}
