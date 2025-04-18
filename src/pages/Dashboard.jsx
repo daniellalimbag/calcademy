@@ -193,7 +193,7 @@ function Dashboard() {
               <Input
                 value={newSubject.name}
                 onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
-                placeholder="e.g. Mathematics 101"
+                placeholder="e.g. GERIZAL"
                 bg={inputBg}
                 borderColor={inputBorderColor}
               />
@@ -203,7 +203,7 @@ function Dashboard() {
               <Input
                 value={newSubject.description}
                 onChange={(e) => setNewSubject({ ...newSubject, description: e.target.value })}
-                placeholder="e.g. Fall 2024 - Professor Smith"
+                placeholder="e.g. Term 2 - Jose Rizal"
                 bg={inputBg}
                 borderColor={inputBorderColor}
               />
