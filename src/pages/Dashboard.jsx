@@ -204,7 +204,7 @@ function Dashboard() {
               <Input
                 value={newSubject.description}
                 onChange={(e) => setNewSubject({ ...newSubject, description: e.target.value })}
-                placeholder="e.g. Term 2 - Jose Rizal"
+                placeholder="e.g. Term 2 - Sir Rizal"
                 bg={inputBg}
                 borderColor={inputBorderColor}
                 size="sm"

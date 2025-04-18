@@ -1,6 +1,7 @@
-import { Box, Flex, Heading, Button, HStack, useColorMode, IconButton } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, HStack, useColorMode, IconButton, Image } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { SunIcon, MoonIcon } from '@chakra-ui/icons';
+import icon from '../assets/icon.png';
 
 function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -14,7 +15,8 @@ function Header() {
       borderBottomColor={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
     >
       <Flex h={16} alignItems="center" justifyContent="space-between">
-        <HStack spacing={8} alignItems="center">
+        <HStack spacing={3} alignItems="center">
+          <Image src={icon} alt="Calcademy Logo" boxSize="30px" />
           <Heading as="h1" size="md" letterSpacing="tight" color="green.500">
             <RouterLink to="/">Calcademy</RouterLink>
           </Heading>
