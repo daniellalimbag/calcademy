@@ -2,11 +2,20 @@ import { useState, useEffect } from 'react';
 import {
   Box, Heading, Button, Card, CardBody, FormControl, FormLabel,
   VStack, Alert, AlertIcon, AlertTitle, AlertDescription,
-  useToast
+  useToast, useColorMode
 } from '@chakra-ui/react';
 
 function Settings() {
   const toast = useToast();
+  const { colorMode } = useColorMode();
+  
+  // Dynamic color variables
+  const cardBg = colorMode === 'dark' ? 'gray.800' : 'white';
+  const cardBorderColor = colorMode === 'dark' ? 'gray.700' : 'gray.200';
+  const headingColor = colorMode === 'dark' ? 'gray.100' : 'gray.800';
+  const subheadingColor = colorMode === 'dark' ? 'gray.200' : 'gray.600';
+  const alertBg = colorMode === 'dark' ? 'yellow.800' : 'yellow.100';
+  const alertTextColor = colorMode === 'dark' ? 'white' : 'gray.800';
   
   const clearAllData = () => {
     if (window.confirm('Are you sure you want to delete all your data? This cannot be undone.')) {
@@ -32,14 +41,14 @@ function Settings() {
 
   return (
     <Box>
-      <Heading size="lg" mb={6} color="gray.100">Settings</Heading>
+      <Heading size="lg" mb={6} color={headingColor}>Settings</Heading>
       
-      <Card mb={6} bg="gray.800" borderColor="gray.700">
+      <Card mb={6} bg={cardBg} borderColor={cardBorderColor}>
         <CardBody>
           <VStack align="stretch" spacing={4}>
-            <Heading size="md" color="gray.200">Data Management</Heading>
+            <Heading size="md" color={subheadingColor}>Data Management</Heading>
             
-            <Alert status="warning" borderRadius="md" bg="yellow.800" color="white">
+            <Alert status="warning" borderRadius="md" bg={alertBg} color={alertTextColor}>
               <AlertIcon />
               <Box>
                 <AlertTitle>Clear All Data</AlertTitle>
