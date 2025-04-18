@@ -1,22 +1,20 @@
-import { useState, useEffect } from 'react';
 import {
-  Box, Heading, Button, Card, CardBody, FormControl, FormLabel,
-  VStack, Alert, AlertIcon, AlertTitle, AlertDescription,
-  useToast, useColorMode
+  Box, Heading, Button, Card, CardBody, VStack,
+  Alert, AlertIcon, AlertTitle, AlertDescription,
+  useToast, useColorMode, Text
 } from '@chakra-ui/react';
 
 function Settings() {
   const toast = useToast();
   const { colorMode } = useColorMode();
-  
-  // Dynamic color variables
+
   const cardBg = colorMode === 'dark' ? 'gray.800' : 'white';
   const cardBorderColor = colorMode === 'dark' ? 'gray.700' : 'gray.200';
   const headingColor = colorMode === 'dark' ? 'gray.100' : 'gray.800';
-  const subheadingColor = colorMode === 'dark' ? 'gray.200' : 'gray.600';
+  const subheadingColor = colorMode === 'dark' ? 'gray.300' : 'gray.600';
   const alertBg = colorMode === 'dark' ? 'yellow.800' : 'yellow.100';
   const alertTextColor = colorMode === 'dark' ? 'white' : 'gray.800';
-  
+
   const clearAllData = () => {
     if (window.confirm('Are you sure you want to delete all your data? This cannot be undone.')) {
       const keysToRemove = [];
@@ -26,9 +24,9 @@ function Settings() {
           keysToRemove.push(key);
         }
       }
-      
+
       keysToRemove.forEach(key => localStorage.removeItem(key));
-      
+
       toast({
         title: 'Data cleared',
         description: 'All application data has been removed',
@@ -41,24 +39,24 @@ function Settings() {
 
   return (
     <Box>
-      <Heading size="lg" mb={6} color={headingColor}>Settings</Heading>
-      
-      <Card mb={6} bg={cardBg} borderColor={cardBorderColor}>
-        <CardBody>
-          <VStack align="stretch" spacing={4}>
-            <Heading size="md" color={subheadingColor}>Data Management</Heading>
-            
-            <Alert status="warning" borderRadius="md" bg={alertBg} color={alertTextColor}>
-              <AlertIcon />
+      <Heading size="md" mb={4} color={headingColor}>Settings</Heading>
+
+      <Card bg={cardBg} borderColor={cardBorderColor} borderWidth="1px" borderRadius="md" mb={4}>
+        <CardBody p={4}>
+          <VStack align="stretch" spacing={3}>
+            <Heading size="sm" color={subheadingColor}>Data Management</Heading>
+
+            <Alert status="warning" borderRadius="md" bg={alertBg} color={alertTextColor} py={2}>
+              <AlertIcon boxSize="4" />
               <Box>
-                <AlertTitle>Clear All Data</AlertTitle>
-                <AlertDescription>
+                <AlertTitle fontSize="sm">Clear All Data</AlertTitle>
+                <AlertDescription fontSize="sm">
                   This will permanently delete all your subjects, categories, and grade data.
                 </AlertDescription>
               </Box>
             </Alert>
-            
-            <Button colorScheme="red" onClick={clearAllData}>
+
+            <Button colorScheme="red" size="sm" onClick={clearAllData}>
               Clear All Data
             </Button>
           </VStack>
