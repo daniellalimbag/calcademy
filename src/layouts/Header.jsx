@@ -40,7 +40,7 @@ function Header() {
           </Button>
           <IconButton
             aria-label="Toggle color mode"
-            icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            icon={colorMode === 'light' ? <SunIcon/> : <MoonIcon />}
             onClick={toggleColorMode}
             variant="ghost"
             color={colorMode === 'dark' ? 'gray.200' : 'gray.700'}
