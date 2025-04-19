@@ -3,7 +3,7 @@ import {
   Box, Heading, Button, SimpleGrid, Card, CardHeader, CardBody, CardFooter,
   Text, HStack, VStack, Input, FormControl, FormLabel, useDisclosure,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-  useToast, Alert, AlertIcon, useColorMode
+  useToast, Alert, AlertIcon, useColorMode, Flex
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
@@ -83,6 +83,7 @@ function Dashboard() {
       status: 'success',
       duration: 3000,
       isClosable: true,
+      position: "top"
     });
   };
 
@@ -111,6 +112,7 @@ function Dashboard() {
         status: 'info',
         duration: 3000,
         isClosable: true,
+        position: "top"
       });
     }
   };  
@@ -127,54 +129,66 @@ function Dashboard() {
   return (
     <Box>
       {!isStorageAvailable && (
-        <Alert status="warning" mb={2}>
-          <AlertIcon boxSize="4" />
-          <Text fontSize="sm">Local storage is not available. Your data will not persist between sessions.</Text>
+        <Alert status="warning" mb={2} fontSize="xs">
+          <AlertIcon boxSize="3" />
+          <Text fontSize={{ base: "xs", md: "sm" }}>Local storage is not available. Your data will not persist between sessions.</Text>
         </Alert>
       )}
 
-      <HStack justifyContent="space-between" mb={4} spacing={2}>
-        <Heading size="md" color={headingColor}>My Subjects</Heading>
-        <Button leftIcon={<AddIcon />} colorScheme="green" onClick={onOpen} size="sm">
+      <Flex 
+        justifyContent="space-between" 
+        mb={4} 
+        spacing={2} 
+        direction={{ base: "column", sm: "row" }}
+        gap={2}
+      >
+        <Heading size={{ base: "sm", md: "md" }} color={headingColor}>My Subjects</Heading>
+        <Button 
+          leftIcon={<AddIcon />} 
+          colorScheme="green" 
+          onClick={onOpen} 
+          size={{ base: "xs", md: "sm" }}
+          width={{ base: "full", sm: "auto" }}
+        >
           Add Subject
         </Button>
-      </HStack>
+      </Flex>
 
       {subjects.length === 0 ? (
         <Card textAlign="center" p={4} bg={cardBg} borderColor={cardBorderColor}>
           <CardBody>
             <VStack spacing={2}>
-              <Text fontSize="sm" color={textColor}>No subjects added yet.</Text>
-              <Button colorScheme="green" onClick={onOpen} size="sm">Add Your First Subject</Button>
+              <Text fontSize={{ base: "xs", md: "sm" }} color={textColor}>No subjects added yet.</Text>
+              <Button colorScheme="green" onClick={onOpen} size={{ base: "xs", md: "sm" }}>Add Your First Subject</Button>
             </VStack>
           </CardBody>
         </Card>
       ) : (
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={4}>
           {subjects.map(subject => (
             <Card key={subject.id} boxShadow="md" borderRadius="md" bg={cardBg} borderColor={cardBorderColor}>
               <CardHeader pb={0}>
-                <Heading size="sm" color={subheadingColor}>{subject.name}</Heading>
+                <Heading size={{ base: "xs", md: "sm" }} color={subheadingColor}>{subject.name}</Heading>
               </CardHeader>
-              <CardBody>
-                <Text fontSize="sm" color={descriptionColor}>{subject.description || 'No description'}</Text>
+              <CardBody py={{ base: 1, md: 2 }}>
+                <Text fontSize={{ base: "xs", md: "sm" }} color={descriptionColor}>{subject.description || 'No description'}</Text>
               </CardBody>
               <CardFooter pt={1} justifyContent="space-between">
                 <Button
                   as={RouterLink}
                   to={`/calculator/${subject.id}`}
                   colorScheme="green"
-                  size="xs"
+                  size={{ base: "xs", md: "xs" }}
                 >
                   Calculate Grades
                 </Button>
                 <Button
                   colorScheme="red"
                   variant="ghost"
-                  size="xs"
+                  size={{ base: "xs", md: "xs" }}
                   onClick={() => handleDeleteSubject(subject.id, subject.name)}
                 >
-                  <DeleteIcon boxSize="3" />
+                  <DeleteIcon boxSize={{ base: "2", md: "3" }} />
                 </Button>
               </CardFooter>
             </Card>
@@ -182,40 +196,50 @@ function Dashboard() {
         </SimpleGrid>
       )}
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={{ base: "xs", md: "md" }}>
         <ModalOverlay />
-        <ModalContent bg={cardBg} color={textColor} maxWidth="sm">
-          <ModalHeader fontSize="sm">Add New Subject</ModalHeader>
+        <ModalContent bg={cardBg} color={textColor} mx={3}>
+          <ModalHeader fontSize={{ base: "sm", md: "md" }}>Add New Subject</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl mb={3} isRequired>
-              <FormLabel fontSize="sm">Subject Name</FormLabel>
+              <FormLabel fontSize={{ base: "xs", md: "sm" }}>Subject Name</FormLabel>
               <Input
                 value={newSubject.name}
                 onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
                 placeholder="e.g. GERIZAL"
                 bg={inputBg}
                 borderColor={inputBorderColor}
-                size="sm"
+                size={{ base: "sm", md: "md" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel fontSize="sm">Description (Optional)</FormLabel>
+              <FormLabel fontSize={{ base: "xs", md: "sm" }}>Description (Optional)</FormLabel>
               <Input
                 value={newSubject.description}
                 onChange={(e) => setNewSubject({ ...newSubject, description: e.target.value })}
                 placeholder="e.g. Term 2 - Sir Rizal"
                 bg={inputBg}
                 borderColor={inputBorderColor}
-                size="sm"
+                size={{ base: "sm", md: "md" }}
               />
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" mr={2} size="sm" onClick={onClose} _hover={{ bg: colorMode === 'dark' ? "gray.700" : "gray.100" }}>
+            <Button 
+              variant="ghost" 
+              mr={2} 
+              size={{ base: "xs", md: "sm" }} 
+              onClick={onClose} 
+              _hover={{ bg: colorMode === 'dark' ? "gray.700" : "gray.100" }}
+            >
               Cancel
             </Button>
-            <Button colorScheme="green" size="sm" onClick={handleAddSubject}>
+            <Button 
+              colorScheme="green" 
+              size={{ base: "xs", md: "sm" }} 
+              onClick={handleAddSubject}
+            >
               Add Subject
             </Button>
           </ModalFooter>

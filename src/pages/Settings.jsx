@@ -33,30 +33,36 @@ function Settings() {
         status: 'success',
         duration: 5000,
         isClosable: true,
+        position: "top"
       });
     }
   };
 
   return (
     <Box>
-      <Heading size="md" mb={4} color={headingColor}>Settings</Heading>
+      <Heading size={{ base: "sm", md: "md" }} mb={4} color={headingColor}>Settings</Heading>
 
       <Card bg={cardBg} borderColor={cardBorderColor} borderWidth="1px" borderRadius="md" mb={4}>
-        <CardBody p={4}>
+        <CardBody p={{ base: 3, md: 4 }}>
           <VStack align="stretch" spacing={3}>
-            <Heading size="sm" color={subheadingColor}>Data Management</Heading>
+            <Heading size={{ base: "xs", md: "sm" }} color={subheadingColor}>Data Management</Heading>
 
             <Alert status="warning" borderRadius="md" bg={alertBg} color={alertTextColor} py={2}>
-              <AlertIcon boxSize="4" />
+              <AlertIcon boxSize={{ base: "3", md: "4" }} />
               <Box>
-                <AlertTitle fontSize="sm">Clear All Data</AlertTitle>
-                <AlertDescription fontSize="sm">
+                <AlertTitle fontSize={{ base: "xs", md: "sm" }}>Clear All Data</AlertTitle>
+                <AlertDescription fontSize={{ base: "xs", md: "sm" }}>
                   This will permanently delete all your subjects, categories, and grade data.
                 </AlertDescription>
               </Box>
             </Alert>
 
-            <Button colorScheme="red" size="sm" onClick={clearAllData}>
+            <Button 
+              colorScheme="red" 
+              size={{ base: "xs", md: "sm" }} 
+              onClick={clearAllData}
+              width={{ base: "full", md: "auto" }}
+            >
               Clear All Data
             </Button>
           </VStack>
