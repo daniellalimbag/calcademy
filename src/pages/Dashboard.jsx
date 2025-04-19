@@ -185,10 +185,10 @@ function Dashboard() {
                 <Button
                   colorScheme="red"
                   variant="ghost"
-                  size={{ base: "xs", md: "xs" }}
+                  size={{ base: "sm", md: "xs" }}
                   onClick={() => handleDeleteSubject(subject.id, subject.name)}
                 >
-                  <DeleteIcon boxSize={{ base: "2", md: "3" }} />
+                  <DeleteIcon boxSize={{ base: "4", md: "3" }} />
                 </Button>
               </CardFooter>
             </Card>
