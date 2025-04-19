@@ -5,8 +5,7 @@ import {
   Input, NumberInput, NumberInputField, NumberInputStepper,
   NumberIncrementStepper, NumberDecrementStepper, Card, CardBody,
   Divider, IconButton, Table, Thead, Tbody, Tr, Th, Td, 
-  Alert, AlertIcon, useToast, Progress, SimpleGrid, useColorMode,
-  Stack, Flex
+  Alert, AlertIcon, useToast, Progress, SimpleGrid, useColorMode
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 
@@ -253,185 +252,60 @@ function Calculator() {
     });
   };
 
-  const MobileItemRow = ({ item, category, onDelete, onUpdate }) => {
-    const percentage = item.maxPoints > 0 
-      ? (item.points / item.maxPoints) * 100 
-      : 0;
-    
-    return (
-      <Box 
-        borderWidth="1px" 
-        borderColor={cardBorderColor} 
-        borderRadius="md" 
-        p={2} 
-        mb={2}
-        bg={inputBg}
-      >
-        <VStack spacing={2} align="stretch">
-          <FormControl>
-            <FormLabel fontSize="xs" mb={0} color={textColor}>Name</FormLabel>
-            <Input
-              size="sm"
-              value={item.name}
-              onChange={(e) => onUpdate(category.id, item.id, 'name', e.target.value)}
-              bg={inputBg}
-              borderColor={inputBorderColor}
-            />
-          </FormControl>
-          
-          <Flex justify="space-between" gap={2}>
-            <FormControl flex="1">
-              <FormLabel fontSize="xs" mb={0} color={textColor}>Score</FormLabel>
-              <NumberInput 
-                size="sm"
-                value={item.points}
-                onChange={(val) => onUpdate(category.id, item.id, 'points', Number(val))}
-                min={0}
-              >
-                <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-              </NumberInput>
-            </FormControl>
-            
-            <FormControl flex="1">
-              <FormLabel fontSize="xs" mb={0} color={textColor}>Max</FormLabel>
-              <NumberInput 
-                size="sm"
-                value={item.maxPoints}
-                onChange={(val) => onUpdate(category.id, item.id, 'maxPoints', Number(val))}
-                min={1}
-              >
-                <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-              </NumberInput>
-            </FormControl>
-          </Flex>
-          
-          <Flex justify="space-between" align="center">
-            <Text fontSize="sm" color={tableCellColor}>{percentage.toFixed(1)}%</Text>
-            <IconButton
-              size="sm"
-              icon={<DeleteIcon />}
-              colorScheme="red"
-              variant="ghost"
-              onClick={() => onDelete(category.id, item.id)}
-            />
-          </Flex>
-        </VStack>
-      </Box>
-    );
-  };
-
-  const MobileGradeRow = ({ grade, index, onUpdate, onDelete }) => {
-    return (
-      <Box 
-        borderWidth="1px" 
-        borderColor={cardBorderColor} 
-        borderRadius="md" 
-        p={2} 
-        mb={2}
-        bg={cardBg}
-      >
-        <Flex
-          wrap="wrap"
-          gap={2}
-          justify="space-between"
-        >
-          <FormControl flex="1" minW={{ base: "48%", sm: "30%" }}>
-            <FormLabel fontSize="xs" mb={0} color={textColor}>Letter</FormLabel>
-            <Input 
-              size="sm"
-              value={grade.letter}
-              onChange={(e) => onUpdate(index, 'letter', e.target.value)}
-              bg={inputBg} 
-              borderColor={inputBorderColor}
-            />
-          </FormControl>
-          
-          <FormControl flex="1" minW={{ base: "48%", sm: "30%" }}>
-            <FormLabel fontSize="xs" mb={0} color={textColor}>Min %</FormLabel>
-            <NumberInput 
-              size="sm"
-              value={grade.minPercentage}
-              onChange={(val) => onUpdate(index, 'minPercentage', val)}
-              min={0}
-              max={100}
-            >
-              <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-            </NumberInput>
-          </FormControl>
-          
-          <FormControl flex="1" minW={{ base: "48%", sm: "30%" }}>
-            <FormLabel fontSize="xs" mb={0} color={textColor}>GPA</FormLabel>
-            <NumberInput 
-              size="sm"
-              value={grade.gpa}
-              onChange={(val) => onUpdate(index, 'gpa', val)}
-              step={0.1}
-              min={0}
-              max={4.0}
-              precision={1}
-            >
-              <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-            </NumberInput>
-          </FormControl>
-  
-          <Box minW="40px">
-            <IconButton
-              size="sm"
-              icon={<DeleteIcon />}
-              colorScheme="red"
-              variant="ghost"
-              onClick={() => onDelete(index)}
-              alignSelf="flex-end"
-              mt="auto"
-            />
-          </Box>
-        </Flex>
-      </Box>
-    );
-  };
-  
-
   if (!subject) return <Box color={textColor}>Loading...</Box>;
 
   return (
-    <Box px={{ base: 2, md: 4 }} maxW="100%" overflow="hidden">
-      <Stack 
-        direction={{ base: "column", md: "row" }} 
-        justifyContent="space-between" 
-        alignItems={{ base: "flex-start", md: "center" }} 
-        mb={4}
-        spacing={2}
+    <Box>
+      <HStack 
+        justifyContent={{ base: "center", sm: "space-between" }} 
+        alignItems="center" 
+        flexDirection={{ base: "column", sm: "row" }} 
+        mb={4} 
+        wrap="wrap"
       >
         <Heading 
           size={{ base: "md", md: "lg" }} 
-          color={headingColor}
-          noOfLines={1}
+          color={headingColor} 
+          fontSize={{ base: "lg", sm: "xl" }} 
+          textAlign={{ base: "center", sm: "left" }}
         >
           {subject.name} Grade Calculator
         </Heading>
-        <Button 
-          size="sm" 
+        <Button
+          size={{ base: "xs", sm: "sm" }} 
+          mt={{ base: 2, sm: 0 }} 
           colorScheme="green" 
           onClick={calculateFinalGrade}
-          width={{ base: "100%", md: "auto" }}
         >
           Recalculate
         </Button>
-      </Stack>
+      </HStack>
   
       <Card mb={4} bg={summaryCardBg} borderRadius="md">
         <CardBody py={4}>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={4}>
             {[
               { label: 'Final Percentage', value: `${finalGrade.percentage.toFixed(2)}%` },
               { label: 'Letter Grade', value: finalGrade.letter },
-              { label: 'GPA', value: finalGrade.gpa.toFixed(1) }
+              { label: 'GPA', value: finalGrade.gpa.toFixed(2) }
             ].map((item, i) => (
               <Box key={i} textAlign="center">
                 <Text fontSize="sm" fontWeight="medium" color={subheadingColor}>{item.label}</Text>
-                <Text fontSize="2xl" fontWeight="bold" color={highlightColor}>{item.value}</Text>
+                <Text 
+                  fontSize={{ base: "xl", sm: "2xl" }} 
+                  fontWeight="bold" 
+                  color={highlightColor}
+                >
+                  {item.value}
+                </Text>
                 {i === 0 && (
-                  <Progress value={finalGrade.percentage} colorScheme="green" size="sm" borderRadius="md" mt={2} />
+                  <Progress 
+                    value={finalGrade.percentage} 
+                    colorScheme="green" 
+                    size="sm" 
+                    borderRadius="md" 
+                    mt={2} 
+                  />
                 )}
               </Box>
             ))}
@@ -440,182 +314,231 @@ function Calculator() {
       </Card>
   
       {categories.reduce((sum, cat) => sum + Number(cat.weight), 0) !== 100 && (
-        <Alert status="warning" mb={4} py={2} fontSize="sm" bg={alertBg} color={alertTextColor}>
+        <Alert 
+          status="warning" 
+          mb={4} 
+          py={2} 
+          fontSize={{ base: "xs", sm: "sm" }} 
+          bg={alertBg} 
+          color={alertTextColor}
+        >
           <AlertIcon />
-          <Text fontSize="xs">
-            The category weights must add up to 100%. Currently they total 
-            {" " + categories.reduce((sum, cat) => sum + Number(cat.weight), 0) + "%"}.
-          </Text>
+          The category weights must add up to 100%. Currently, they total 
+          {" " + categories.reduce((sum, cat) => sum + Number(cat.weight), 0) + "%"}.
         </Alert>
       )}
   
       <VStack spacing={4} align="stretch" mb={6}>
         {categories.map(category => (
           <Card key={category.id} borderRadius="md" bg={cardBg} borderColor={cardBorderColor}>
-            <CardBody p={{ base: 2, md: 4 }}>
+            <CardBody p={4}>
               <VStack spacing={4} align="stretch">
-                <Stack 
-                  direction={{ base: "column", md: "row" }}
-                  justifyContent="space-between" 
-                  spacing={2}
-                >
-                  <FormControl>
-                    <FormLabel fontSize="xs" mb={1} color={textColor}>Category Name</FormLabel>
-                    <Input 
-                      size="sm"
-                      value={category.name} 
-                      onChange={(e) => updateCategory(category.id, 'name', e.target.value)}
-                      bg={inputBg}
-                      borderColor={inputBorderColor}
-                    />
-                  </FormControl>
-                  <Stack direction="row" width={{ base: "100%", md: "auto" }}>
-                    <FormControl flex="1">
-                      <FormLabel fontSize="xs" mb={1} color={textColor}>Weight (%)</FormLabel>
-                      <NumberInput 
-                        size="sm"
-                        value={category.weight}
-                        onChange={(val) => updateCategory(category.id, 'weight', Number(val))}
-                        min={0}
-                        max={100}
-                      >
-                        <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper />
-                          <NumberDecrementStepper />
-                        </NumberInputStepper>
-                      </NumberInput>
-                    </FormControl>
-                    <IconButton
-                      size="sm"
-                      icon={<DeleteIcon />}
-                      colorScheme="red"
-                      variant="ghost"
-                      onClick={() => deleteCategory(category.id)}
-                      alignSelf="flex-end"
-                    />
-                  </Stack>
-                </Stack>
-  
-                <Divider borderColor={cardBorderColor} />
-  
-                <Box display={{ base: "none", md: "block" }}>
-                  <Table size="sm" variant="simple">
-                    <Thead>
-                      <Tr>
-                        <Th px={2} color={tableHeaderColor} fontSize="xs">Name</Th>
-                        <Th isNumeric px={2} color={tableHeaderColor} fontSize="xs">Your Score</Th>
-                        <Th isNumeric px={2} color={tableHeaderColor} fontSize="xs">Max Score</Th>
-                        <Th isNumeric px={2} color={tableHeaderColor} fontSize="xs">%</Th>
-                        <Th w="40px" px={2}></Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {category.items.map(item => {
-                        const percentage = item.maxPoints > 0 
-                          ? (item.points / item.maxPoints) * 100 
-                          : 0;
-                        return (
-                          <Tr key={item.id}>
-                            <Td px={2}>
-                              <Input
-                                size="sm"
-                                value={item.name}
-                                onChange={(e) => updateItem(category.id, item.id, 'name', e.target.value)}
-                                bg={inputBg}
-                                borderColor={inputBorderColor}
-                              />
-                            </Td>
-                            <Td isNumeric px={2}>
-                              <NumberInput 
-                                size="sm"
-                                value={item.points}
-                                onChange={(val) => updateItem(category.id, item.id, 'points', Number(val))}
-                                min={0}
-                              >
-                                <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-                              </NumberInput>
-                            </Td>
-                            <Td isNumeric px={2}>
-                              <NumberInput 
-                                size="sm"
-                                value={item.maxPoints}
-                                onChange={(val) => updateItem(category.id, item.id, 'maxPoints', Number(val))}
-                                min={1}
-                              >
-                                <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-                              </NumberInput>
-                            </Td>
-                            <Td isNumeric px={2} color={tableCellColor}>
-                              {percentage.toFixed(1)}%
-                            </Td>
-                            <Td px={2}>
-                              <IconButton
-                                size="sm"
-                                icon={<DeleteIcon />}
-                                colorScheme="red"
-                                variant="ghost"
-                                onClick={() => deleteItem(category.id, item.id)}
-                              />
-                            </Td>
-                          </Tr>
-                        );
-                      })}
-                    </Tbody>
-                  </Table>
-                </Box>
+              <HStack
+                justifyContent="space-between"
+                wrap="wrap"
+                alignItems={{ base: "flex-start", md: "center" }} // Ensures the delete button stays aligned
+                mb={4}
+              >
+                <FormControl maxW={{ base: "120px", md: "160px" }}>
+                  <FormLabel fontSize="sm" mb={1} color={textColor}>Category Name</FormLabel>
+                  <Input 
+                    size="sm"
+                    value={category.name} 
+                    onChange={(e) => updateCategory(category.id, 'name', e.target.value)}
+                    bg={inputBg}
+                    borderColor={inputBorderColor}
+                  />
+                </FormControl>
                 
-                <Box display={{ base: "block", md: "none" }}>
-                  {category.items.length > 0 ? (
-                    <VStack spacing={2} align="stretch">
-                      {category.items.map(item => (
-                        <MobileItemRow 
-                          key={item.id} 
-                          item={item} 
-                          category={category} 
-                          onDelete={deleteItem} 
-                          onUpdate={updateItem} 
-                        />
-                      ))}
-                    </VStack>
-                  ) : (
-                    <Text fontSize="sm" color={textColor} textAlign="center" py={2}>
-                      No items added yet
-                    </Text>
-                  )}
-                </Box>
-  
-                <Button 
-                  leftIcon={<AddIcon />} 
-                  size="sm" 
-                  onClick={() => addItem(category.id)} 
-                  width={{ base: "100%", md: "auto" }}
-                  colorScheme="green"
-                >
-                  Add Item
-                </Button>
+                <FormControl maxW={{ base: "100px", md: "120px" }}>
+                  <FormLabel fontSize="sm" mb={1} color={textColor}>Weight (%)</FormLabel>
+                  <NumberInput 
+                    size="sm"
+                    value={category.weight}
+                    onChange={(val) => updateCategory(category.id, 'weight', Number(val))}
+                    min={0}
+                    max={100}
+                  >
+                    <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+                
+                <IconButton
+                  size="sm"
+                  icon={<DeleteIcon />}
+                  colorScheme="red"
+                  variant="ghost"
+                  onClick={() => deleteCategory(category.id)}
+                  alignSelf={{ base: "flex-start", md: "center" }}
+                />
+              </HStack>
+              <Divider borderColor={cardBorderColor} />
+              {/* desktop view */}
+              <Box display={{ base: "none", md: "block" }}>
+                <Table size="sm" variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th px={2} color={tableHeaderColor} fontSize="sm">Name</Th>
+                      <Th isNumeric px={2} color={tableHeaderColor} fontSize="sm">Your Score</Th>
+                      <Th isNumeric px={2} color={tableHeaderColor} fontSize="sm">Max Score</Th>
+                      <Th isNumeric px={2} color={tableHeaderColor} fontSize="sm">%</Th>
+                      <Th w="40px" px={2}></Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {category.items.map(item => {
+                      const percentage = item.maxPoints > 0 
+                        ? (item.points / item.maxPoints) * 100 
+                        : 0;
+                      return (
+                        <Tr key={item.id}>
+                          <Td px={2}>
+                            <Input
+                              size="sm"
+                              value={item.name}
+                              onChange={(e) => updateItem(category.id, item.id, 'name', e.target.value)}
+                              bg={inputBg}
+                              borderColor={inputBorderColor}
+                            />
+                          </Td>
+                          <Td isNumeric px={2}>
+                            <NumberInput 
+                              size="sm"
+                              value={item.points}
+                              onChange={(val) => updateItem(category.id, item.id, 'points', Number(val))}
+                              min={0}
+                            >
+                              <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
+                            </NumberInput>
+                          </Td>
+                          <Td isNumeric px={2}>
+                            <NumberInput 
+                              size="sm"
+                              value={item.maxPoints}
+                              onChange={(val) => updateItem(category.id, item.id, 'maxPoints', Number(val))}
+                              min={1}
+                            >
+                              <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
+                            </NumberInput>
+                          </Td>
+                          <Td isNumeric px={2} color={tableCellColor}>
+                            {percentage.toFixed(1)}%
+                          </Td>
+                          <Td px={2}>
+                            <IconButton
+                              size="sm"
+                              icon={<DeleteIcon />}
+                              colorScheme="red"
+                              variant="ghost"
+                              onClick={() => deleteItem(category.id, item.id)}
+                            />
+                          </Td>
+                        </Tr>
+                      );
+                    })}
+                  </Tbody>
+                </Table>
+              </Box>
+
+              {/* mobile view */}
+              <Box display={{ base: "flex", md: "none" }} flexDirection="column" gap={4}>
+                {category.items.map(item => {
+                  const percentage = item.maxPoints > 0 
+                    ? (item.points / item.maxPoints) * 100 
+                    : 0;
+
+                  return (
+                    <Box key={item.id} p={3} borderWidth={1} borderRadius="md" boxShadow="sm">
+                      <VStack align="start" spacing={4}>
+                        <FormControl>
+                          <FormLabel fontSize="sm">Name</FormLabel>
+                          <Input
+                            size="sm"
+                            value={item.name}
+                            onChange={(e) => updateItem(category.id, item.id, 'name', e.target.value)}
+                            bg={inputBg}
+                            borderColor={inputBorderColor}
+                          />
+                        </FormControl>
+
+                        <HStack spacing={4} align="stretch">
+                          <FormControl flex="1">
+                            <FormLabel fontSize="sm">Your Score</FormLabel>
+                            <NumberInput 
+                              size="sm"
+                              value={item.points}
+                              onChange={(val) => updateItem(category.id, item.id, 'points', Number(val))}
+                              min={0}
+                            >
+                              <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
+                            </NumberInput>
+                          </FormControl>
+                          <FormControl flex="1">
+                            <FormLabel fontSize="sm">Max Score</FormLabel>
+                            <NumberInput 
+                              size="sm"
+                              value={item.maxPoints}
+                              onChange={(val) => updateItem(category.id, item.id, 'maxPoints', Number(val))}
+                              min={1}
+                            >
+                              <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
+                            </NumberInput>
+                          </FormControl>
+                        </HStack>
+
+                        <HStack justifyContent="space-between" w="100%" spacing={4}>
+                          <Text fontSize="sm">Percentage: {percentage.toFixed(1)}%</Text>
+                          <IconButton
+                            size="sm"
+                            icon={<DeleteIcon />}
+                            colorScheme="red"
+                            variant="ghost"
+                            onClick={() => deleteItem(category.id, item.id)}
+                          />
+                        </HStack>
+                      </VStack>
+                    </Box>
+                  );
+                })}
+              </Box>
+              <Button
+                leftIcon={<AddIcon />}
+                size={{ base: "xs", sm: "sm" }}
+                onClick={() => addItem(category.id)}
+                alignSelf={{ base: "center", sm: "flex-start" }}
+                colorScheme="green"
+                mt={{ base: 2, sm: 0 }}
+                px={{ base: 3, sm: 4 }}
+              >
+                Add Item
+              </Button>
               </VStack>
             </CardBody>
           </Card>
         ))}
       </VStack>
   
-      <Button 
-        leftIcon={<AddIcon />} 
-        mb={6} 
-        size="sm" 
-        onClick={addCategory} 
+      <Button
+        leftIcon={<AddIcon />}
+        mb={{ base: 4, sm: 6 }}
+        size={{ base: "xs", sm: "sm" }}
+        onClick={addCategory}
         colorScheme="green"
-        width={{ base: "100%", md: "auto" }}
+        px={{ base: 3, sm: 4 }}
+        alignSelf={{ base: "center", sm: "flex-start" }}
       >
         Add Category
       </Button>
   
       <Card mb={4} bg={cardBg} borderColor={cardBorderColor}>
-        <CardBody p={{ base: 3, md: 4 }}>
+        <CardBody p={4}>
           <Heading size="sm" mb={3} color={subheadingColor}>Bonus Points</Heading>
-          <FormControl maxW={{ base: "100%", md: "160px" }}>
-            <FormLabel fontSize="xs" mb={1} color={textColor}>Extra Percentage Points</FormLabel>
+          <FormControl maxW="160px">
+            <FormLabel fontSize="sm" mb={1} color={textColor}>Extra Percentage Points</FormLabel>
             <NumberInput 
               size="sm"
               value={bonusPoints}
@@ -631,106 +554,106 @@ function Calculator() {
           </FormControl>
         </CardBody>
       </Card>
-  
-      <Card bg={cardBg} borderColor={cardBorderColor} mb={6}>
-        <CardBody p={{ base: 3, md: 4 }}>
-          <Stack 
-            direction={{ base: "column", md: "row" }} 
-            justifyContent="space-between" 
-            mb={3}
-            spacing={2}
-            align={{ base: "stretch", md: "center" }}
-          >
-            <Heading size="sm" color={subheadingColor}>Grading Scale</Heading>
+      <Card bg={cardBg} borderColor={cardBorderColor}>
+        <CardBody p={4}>
+          <HStack justifyContent="space-between" mb={3} wrap="wrap">
+          <Heading 
+              color={subheadingColor}
+              fontSize={{ base: "sm", sm: "md", md: "lg" }}
+            >
+              Grading Scale
+            </Heading>
             <Button 
               leftIcon={<AddIcon />} 
-              size="sm" 
+              size={{ base: "xs", sm: "sm" }} 
               onClick={addGradeToScale} 
               colorScheme="green"
-              width={{ base: "100%", md: "auto" }}
             >
               Add Grade
             </Button>
-          </Stack>
-          
-          <Box display={{ base: "none", md: "block" }}>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th px={2} color={tableHeaderColor}>Letter</Th>
-                  <Th px={2} color={tableHeaderColor}>Min %</Th>
-                  <Th px={2} color={tableHeaderColor}>GPA</Th>
-                  <Th w="40px" px={2}></Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {gradingScale.map((grade, index) => (
-                  <Tr key={index}>
-                    <Td px={2}>
-                      <Input 
-                        size="sm"
-                        value={grade.letter}
-                        onChange={(e) => updateGradingScale(index, 'letter', e.target.value)}
-                        bg={inputBg} 
-                        borderColor={inputBorderColor}
-                      />
-                    </Td>
-                    <Td px={2}>
-                      <NumberInput 
-                        size="sm"
-                        value={grade.minPercentage}
-                        onChange={(val) => updateGradingScale(index, 'minPercentage', val)}
-                        min={0}
-                        max={100}
-                      >
-                        <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-                      </NumberInput>
-                    </Td>
-                    <Td px={2}>
-                      <NumberInput 
-                        size="sm"
-                        value={grade.gpa}
-                        onChange={(val) => updateGradingScale(index, 'gpa', val)}
-                        step={0.1}
-                        min={0}
-                        max={4.0}
-                        precision={1}
-                      >
-                        <NumberInputField bg={inputBg} borderColor={inputBorderColor} />
-                      </NumberInput>
-                    </Td>
-                    <Td px={2}>
-                      <IconButton
-                        size="sm"
-                        icon={<DeleteIcon />}
-                        colorScheme="red"
-                        variant="ghost"
-                        onClick={() => deleteGradeFromScale(index)}
-                      />
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </Box>
-          
-          <Box display={{ base: "block", md: "none" }}>
-            <VStack spacing={2} align="stretch">
-              {gradingScale.map((grade, index) => (
-                <MobileGradeRow 
-                  key={index} 
-                  grade={grade} 
-                  index={index} 
-                  onUpdate={updateGradingScale} 
-                  onDelete={deleteGradeFromScale} 
+          </HStack>
+
+      <Table size="sm">
+        <Thead>
+          <Tr>
+            <Th px={{ base: 1, sm: 2 }} color={tableHeaderColor} fontSize={{ base: "xs", sm: "sm" }}>
+              Letter
+            </Th>
+            <Th px={{ base: 1, sm: 2 }} color={tableHeaderColor} fontSize={{ base: "xs", sm: "sm" }}>
+              Min %
+            </Th>
+            <Th px={{ base: 1, sm: 2 }} color={tableHeaderColor} fontSize={{ base: "xs", sm: "sm" }}>
+              GPA
+            </Th>
+            <Th w="40px" px={2}></Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {gradingScale.map((grade, index) => (
+            <Tr key={index}>
+              <Td px={{ base: 1, sm: 2 }}>
+                <Input 
+                  size={{ base: "xs", sm: "sm" }}
+                  value={grade.letter}
+                  onChange={(e) => updateGradingScale(index, 'letter', e.target.value)}
+                  bg={inputBg} 
+                  borderColor={inputBorderColor}
+                  fontSize={{ base: "xs", sm: "sm" }}
                 />
-              ))}
-            </VStack>
-          </Box>
-        </CardBody>
-      </Card>
+              </Td>
+              
+              <Td px={{ base: 1, sm: 2 }}>
+                <NumberInput 
+                  size={{ base: "xs", sm: "sm" }}
+                  value={grade.minPercentage}
+                  onChange={(val) => updateGradingScale(index, 'minPercentage', val)}
+                  min={0}
+                  max={100}
+                >
+                  <NumberInputField 
+                    bg={inputBg} 
+                    borderColor={inputBorderColor} 
+                    fontSize={{ base: "xs", sm: "sm" }} 
+                  />
+                </NumberInput>
+              </Td>
+              
+              <Td px={{ base: 1, sm: 2 }}>
+                <NumberInput 
+                  size={{ base: "xs", sm: "sm" }}
+                  value={grade.gpa}
+                  onChange={(val) => updateGradingScale(index, 'gpa', val)}
+                  step={0.1}
+                  min={0}
+                  max={4.0}
+                  precision={1}
+                >
+                  <NumberInputField 
+                    bg={inputBg} 
+                    borderColor={inputBorderColor} 
+                    fontSize={{ base: "xs", sm: "sm" }} 
+                  />
+                </NumberInput>
+              </Td>
+            
+                <Td px={{ base: 1, sm: 2 }}>
+                  <IconButton
+                    size={{ base: "xs", sm: "sm" }}
+                    icon={<DeleteIcon />}
+                    colorScheme="red"
+                    variant="ghost"
+                    onClick={() => deleteGradeFromScale(index)}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </CardBody>
+    </Card>
     </Box>
   );
+  
 }
 
 export default Calculator;
