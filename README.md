@@ -6,6 +6,11 @@ Calcademy is a customizable, student-focused grade calculator built to help user
 
 Site: [https://calcademy.vercel.app/](https://calcademy.vercel.app/)
 
+<p float="left">
+  <img src="Screenshot_1.png" width="400"/>
+  <img src="Screenshot_2.png" width="800"/>
+</p>
+
 ---
 
 ## Motivation
@@ -15,5 +20,10 @@ I hated when I wanted to calculate the minimum score I needed on a final to pass
 - **Exam grade holders are missing**.
 - **Grade weights aren't applied** correctly or are not visible.
 - **Bonus points** are given and not reflected in the final grade.
+
+---
+## Tech Used
+- **React**
+- **Chakra UI**
 
 ---
