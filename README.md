@@ -7,7 +7,7 @@ Calcademy is a customizable, student-focused grade calculator built to help user
 Site: [https://calcademy.vercel.app/](https://calcademy.vercel.app/)
 
 <p float="left">
-  <img src="Screenshot_1.png" width="400"/>
+  <img src="Screenshot_1.png" width="800"/>
   <img src="Screenshot_2.png" width="800"/>
 </p>
 
